@@ -1,0 +1,85 @@
+{% extends 'base_layout.html' %}
+
+{% block body %}
+<div class="container mt-5 rounded pageContentWrapper mb-3" style="background-color: white;">
+
+<br>
+<div class="card" >
+  <h1 class="mt-2 ml-2">Weather</h1>
+  <h3 class="mt-2 ml-2">{{weather["name"]}}</h3>
+  <div class="row mt-2 ml-2">
+      <div class="col" >
+          <p>{{weather["desc"]}}<img src="{{weather["img"]}}" class="rounded" style="width: 30px;"></p>
+          <hr>
+          <p>อุณหภูมิ {{weather["temp"]}}</p>
+          <hr>
+      </div>
+      <div class="col">
+        <p>ความกดอากาศ {{weather["pres"]}}<p>
+          <hr>
+        <p>ความชื้นสัมพัทธ์ {{weather["hum"]}}</p>
+        <hr>
+    </div>
+    <div class="col">
+        <p>ความเร็วลม {{weather["wind"]}}</p>
+        <hr>
+    </div>
+  </div>
+  <form action="/" class="mt-2 ml-2"> 
+    <div class="input-group mb-3" style="width: 25%;">
+      <input name="city" type="text" class="form-control" placeholder="Search">
+      <div class="input-group-append">
+        <button class="btn btn-success" type="submit">Search</button>
+      </div>
+    </div>
+  </form>
+  <br>
+      <h3 class="mt-2 ml-2">Covid-19 News</h3>
+    <div class="card mb-3 mt-2 ml-2 mr-2">
+        <img class="card-img-top" src="{{ news[0]['img'] }}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{ news[0]['head'] }}</h5>
+          <p class="card-text">{{ news[0]['content'] }}<a href="{{ news[0]['url'] }}" target="_blank">read more</a></p>
+          
+        </div>
+      </div>
+
+      <div class="card mb-3 mt-2 ml-2 mr-2">
+        <img class="card-img-top" src="{{ news[1]['img'] }}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{ news[1]['head'] }}</h5>
+          <p class="card-text">{{ news[1]['content'] }}<a href="{{ news[1]['url'] }}" target="_blank">read more</a></p>
+          
+        </div>
+      </div>
+
+      <div class="card mb-3 mt-2 ml-2 mr-2">
+        <img class="card-img-top" src="{{ news[2]['img'] }}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{ news[2]['head'] }}</h5>
+          <p class="card-text">{{ news[2]['content'] }}<a href="{{ news[2]['url'] }}" target="_blank">read more</a></p>
+          
+        </div>
+      </div>
+
+      <div class="card mb-3 mt-2 ml-2 mr-2">
+        <img class="card-img-top" src="{{ news[3]['img'] }}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{ news[3]['head'] }}</h5>
+          <p class="card-text">{{ news[3]['content'] }}<a href="{{ news[3]['url'] }}" target="_blank">read more</a></p>
+          
+        </div>
+      </div>
+
+      <div class="card mb-3 mt-2 ml-2 mr-2">
+        <img class="card-img-top" src="{{ news[4]['img'] }}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{ news[4]['head'] }}</h5>
+          <p class="card-text">{{ news[4]['content'] }}<a href="{{ news[4]['url'] }}" target="_blank">read more</a></p>
+          
+        </div>
+      </div>
+
+    </div>
+</div>
+{% endblock %}
