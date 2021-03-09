@@ -12,13 +12,12 @@
     <div id="scattergraph">
         <script>
             var graphs = {{ plot | safe}};
-            Plotly.plot('scattergraph', graphs, {});
+            // scattergraph เอามาจาก id ของ div
+            Plotly.plot('scattergraph', graphs, {}); // วาดลงไปใน HTML
         </script>
     </div>
 
 </body>
-
-
 
 </html>
 

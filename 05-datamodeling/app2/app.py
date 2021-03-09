@@ -1,72 +1,41 @@
-from flask import Flask,render_template,request,redirect
+from flask import Flask, request, flash, url_for, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
-from models import db,Employee
 
- 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
- 
-db.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
+app.config['SECRET_KEY'] = "secret-key"
 
-@app.before_first_request
-def create_table():
-    db.create_all()
+db = SQLAlchemy(app)
 
-@app.route('/data/insert' , methods = ['GET','POST'])
+class Student(db.Model):
+   student_id = db.Column('student_id', db.Integer, primary_key = True)
+   first_name = db.Column(db.String(80), nullable=False)
+   last_name = db.Column(db.String(80), nullable=False)
+   age = db.Column(db.Integer())
+   phone = db.Column(db.Integer())
+   email = db.Column(db.String(120))
+
+@app.route('/')
+def home():
+   return render_template('home.html', students = Student.query.all() ) # ดึงข้อมูลทั้งหมด
+
+@app.route('/insert_item', methods = ['GET', 'POST'])
 def insert():
-    if request.method == 'GET':
-        return render_template('insert.html')
- 
     if request.method == 'POST':
-        employee_id = request.form['employee_id']
-        name = request.form['name']
+      if not request.form['firstname'] or not request.form['lastname'] or not request.form['age']:
+         flash('Please enter all the fields', 'error')
+      else:
+
+        first_name = request.form['firstname']
+        last_name = request.form['lastname']
         age = request.form['age']
-        position = request.form['position']
-        employee = Employee(employee_id=employee_id, name=name, age=age, position = position)
-        db.session.add(employee)
+        phone = request.form['phone']
+        email = request.form['email']
+          
+        student = Student(first_name=first_name, last_name=last_name, age=age, phone=phone, email=email)
+         
+        db.session.add(student)
         db.session.commit()
-        return redirect('/data')
-
-@app.route('/data')
-def RetrieveDataList():
-    employees = Employee.query.all()
-    return render_template('datalist.html', employees = employees)
-@app.route('/data/<int:id>')
-def RetrieveSingleEmployee(id):
-    employee = Employee.query.filter_by(employee_id=id).first()
-    if employee:
-        return render_template('data.html', employee = employee)
-    return "Employee with id ={0} Does not exist".format(id)
-
-@app.route('/data/<int:id>/update',methods = ['GET','POST'])
-def update(id):
-    employee = EmployeeModel.query.filter_by(employee_id=id).first()
-    if request.method == 'POST':
-        if employee:
-            db.session.delete(employee)
-            db.session.commit()
- 
-            name = request.form['name']
-            age = request.form['age']
-            position = request.form['position']
-            employee = Employee(employee_id=id, name=name, age=age, position = position)
- 
-            db.session.add(employee)
-            db.session.commit()
-            return redirect(f'/data/{id}')
-        return "Employee with id = {0} Does not exist".format(id)
- 
-    return render_template('update.html', employee = employee)
-@app.route('/data/<int:id>/delete', methods=['GET','POST'])
-def delete(id):
-    employee = Employee.query.filter_by(employee_id=id).first()
-    if request.method == 'POST':
-        if employee:
-            db.session.delete(employee)
-            db.session.commit()
-            return redirect('/data')
-        abort(404)
- 
-    return render_template('delete.html')
-
+        flash('successfully')
+        return redirect(url_for('home')) # กำหนดให้ไปที่ home()
+    return render_template('insert.html')
